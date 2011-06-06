@@ -1,0 +1,9 @@
+[Desktop Entry]
+Exec=embeddedkonsole /opt/QtPalmtop/bin/z/Fmanager.sh
+Icon=static/desktop/z/fmanager
+Type=Application
+Name=File Manager
+Comment=V1.00
+Name[zh_CN]=File Manager
+Comment[zh_CN]=V1.00
+WifiCheck = 0

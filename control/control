@@ -1,0 +1,10 @@
+Package: File_Manager
+Priority: optional
+Version: 1.0
+Architecture: all 
+Maintainer: 544080857 <544080857@qq.com>
+Source: zhiyb
+Section: zhiyb
+Depends: 
+Description: File Manager Program
+
