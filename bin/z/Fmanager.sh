@@ -1,29 +1,30 @@
-#!/bin/sh
+#!/bin/bash
 
-#±äÁ¿
-app='/opt/QtPalmtop/bin/z'
+#å˜é‡
+#app='/opt/QtPalmtop/bin/z'
+app="$PWD/bin/z"
 listfile='/tmp/ListSelect.tmp' ; null='/dev/null'
-recycle='/mnt/UsrDisk/Recycle'
+recycle="$PWD/Recycle"
 outfile='/tmp/DirFile.tmp' ; lstmp='/tmp/ls.tmp'
 optbin='/opt/QtPalmtop/bin'
 declare -a dir style click clickterms \
-title=("ÎÄ¼ş¹ÜÀí ´ò¿ªÎÄ¼ş Ñ¡ÔñÎÄ¼ş ±£´æÎÄ¼ş") bak \
-clickbak clickmsg=("Ñ¡Ôñ´ËÏî È¡ÏûÑ¡Ôñ") \
-clickshow=("'[ ]' '\E[94m[\E[31mX\E[94m]'") \
-dirlink=(¹ÒÔØµ½´ËÎÄ¼ş¼Ğ ½øÈëÁ´½ÓÄ¿Â¼) \
-linkshow=([1]="½øÈëÁ´½ÓÄ¿Â¼") clicknames \
-tar=("´ò¿ª... ´ò¿ª... ½âÑ¹...") copy ok=("Íê³É")
+title=('æ–‡ä»¶ç®¡ç†' 'æ‰“å¼€æ–‡ä»¶' 'é€‰æ‹©æ–‡ä»¶' 'ä¿å­˜æ–‡ä»¶') bak \
+clickbak clickmsg=('é€‰æ‹©æ­¤é¡¹' 'å–æ¶ˆé€‰æ‹©') \
+clickshow=('[ ]' '\E[94m[\E[31mX\E[94m]') \
+dirlink=("æŒ‚è½½åˆ°æ­¤æ–‡ä»¶å¤¹" "è¿›å…¥é“¾æ¥ç›®å½•") \
+linkshow=([1]="è¿›å…¥é“¾æ¥ç›®å½•") clicknames \
+tar=("æ‰“å¼€..." "æ‰“å¼€..." "è§£å‹...") copy ok=("å®Œæˆ")
 xy="4 14 0 0" ; select=1
 for ((n=1;n<=255;n++)) ; do
-  ok[$n]="Ê§°Ü"
+  ok[$n]="å¤±è´¥"
 done
 
-#×ªÒåĞòÁĞ
+#è½¬ä¹‰åºåˆ—
 inc='\E[33;40m' ; comc='\E[31m' ; end='\E[0m'
-declare -a color=("'\E[94m' '\E[92m' '\E[96m'\
- '\E[95m' '\E[31m' '\E[22;36m' '\E[92m'") linkp=("'' '\E[3;1H\E[2K'")
+declare -a color=('\E[94m' '\E[92m' '\E[96m'\
+ '\E[95m' '\E[31m' '\E[22;36m' '\E[92m') linkp=('' '\E[3;1H\E[2K')
 
-#º¯Êı
+#å‡½æ•°
 prog_find(){
   n=0 ; unset dir[@] ; ls -1a > "$lstmp"
   while read line ; do
@@ -39,7 +40,7 @@ prog_find(){
   $app/List.sh "  ${title[open]}  "\
   "${PWD:((${#PWD}>36?-36:0))}" "" "0" "10" "$((select-1))"\
   "'..' `for ((n=2;n<${#dir[@]};n++)) ; do echo "'${clickshow[click[n]]}${color[style[n]]}${dir[n]}'" ; done`\
-  '> $incÄ¿Â¼²Ù×÷...' '> $incÑ¡ÔñÏî²Ù×÷...' '> $inc´ÅÅÌĞÅÏ¢' '> $incÍË³ö'"
+  '> $incç›®å½•æ“ä½œ...' '> $incé€‰æ‹©é¡¹æ“ä½œ...' '> $incç£ç›˜ä¿¡æ¯' '> $incé€€å‡º'"
 }
 prog_sure(){
   if [ -d "$line" ] ; then style[n]=0
@@ -54,8 +55,8 @@ prog_sure(){
   fi
 }
 prog_msgbox_dirmenu(){
-  $app/Msgbox.sh "$xy" "Ä¿Â¼²Ù×÷"\
-  "'ÔËĞĞÃüÁî...' 'ĞÂ½¨ÎÄ¼ş(¼Ğ)...' ´´½¨Á´½Ó Õ³Ìù ²éÕÒ ·µ»Ø"
+  $app/Msgbox.sh "$xy" "ç›®å½•æ“ä½œ"\
+  "'è¿è¡Œå‘½ä»¤...' 'æ–°å»ºæ–‡ä»¶(å¤¹)...' åˆ›å»ºé“¾æ¥ ç²˜è´´ æŸ¥æ‰¾ è¿”å›"
   case "$?" in
   0 ) prog_msgbox_run ;;
   1 ) prog_msgbox_new ;;
@@ -65,38 +66,38 @@ prog_msgbox_dirmenu(){
   esac
 }
 prog_msgbox_run(){
-  $app/Msgbox.sh "$xy" "ÔËĞĞÃüÁî"\
-  "Ó¢ÎÄÃüÁî ÖĞÎÄÃüÁî È¡Ïû"
+  $app/Msgbox.sh "$xy" "è¿è¡Œå‘½ä»¤"\
+  "è‹±æ–‡å‘½ä»¤ ä¸­æ–‡å‘½ä»¤ å–æ¶ˆ"
   case "$?" in
   0 ) $app/Terminal.sh "EN" ;;
   1 ) $app/Terminal.sh "CH" ;;
   esac
 }
 prog_msgbox_new(){
-  $app/Msgbox.sh "$xy" "'ĞÂ½¨ÎÄ¼ş(¼Ğ)'"\
-  "ĞÂ½¨ÎÄ¼ş ĞÂ½¨ÎÄ¼ş¼Ğ È¡Ïû"
+  $app/Msgbox.sh "$xy" "'æ–°å»ºæ–‡ä»¶(å¤¹)'"\
+  "æ–°å»ºæ–‡ä»¶ æ–°å»ºæ–‡ä»¶å¤¹ å–æ¶ˆ"
   case "$?" in
-  0 ) prog_input "ĞÂ½¨ÎÄ¼ş" ; echo -n "" >> "$read" ;;
-  1 ) prog_input "ĞÂ½¨ÎÄ¼ş¼Ğ" ; mkdir "$read" ;;
+  0 ) prog_input "æ–°å»ºæ–‡ä»¶" ; echo -n "" >> "$read" ;;
+  1 ) prog_input "æ–°å»ºæ–‡ä»¶å¤¹" ; mkdir "$read" ;;
   esac
 }
 prog_link_make(){
   if [ "$mount" = "" ] ; then
-    echo -e "$incÃ»ÓĞÑ¡ÔñÁ´½ÓÔ­ÎÄ¼ş!$end" ; return
+    echo -e "$incæ²¡æœ‰é€‰æ‹©é“¾æ¥åŸæ–‡ä»¶!$end" ; return
   fi
-  prog_input ´´½¨Á´½Ó ; ln -sn "$mount" "./$read"
-  echo -e "$incÁ´½Ó´´½¨${ok[$?]}!$end"
+  prog_input åˆ›å»ºé“¾æ¥ ; ln -sn "$mount" "./$read"
+  echo -e "$incé“¾æ¥åˆ›å»º${ok[$?]}!$end"
 }
 prog_input(){
-  echo -e "\E[1m$inc$1 ÇëÊäÈëÃû³Æ: (²Á³ıÖĞÎÄ×Ö·ûÊ±»á³öÎÊÌâ)$end"
+  echo -e "\E[1m$inc$1 è¯·è¾“å…¥åç§°: (æ“¦é™¤ä¸­æ–‡å­—ç¬¦æ—¶ä¼šå‡ºé—®é¢˜)$end"
   read -r read
 }
 prog_paste(){
   if [ "${copy[0]}" = "" ] ; then
-    echo -e "$inc¼ôÌù°åÖĞÎŞÎÄ¼ş!$end"
+    echo -e "$incå‰ªè´´æ¿ä¸­æ— æ–‡ä»¶!$end"
     usleep 500000 ; return
   fi
-  echo -e "$incÕ³ÌùÖĞ...$end"
+  echo -e "$incç²˜è´´ä¸­...$end"
   for ((n=1;n<${#copy[@]};n++)) ; do
     echo -e "$inc$n/$((${#copy[@]}-1)): ${copy[n]}$end"
     if [ "${copy[0]}" = 0 ] ; then mv "${copy[n]}" .
@@ -105,14 +106,14 @@ prog_paste(){
   done
 }
 prog_search(){
-  echo -e "$inc´Ë¹¦ÄÜÎ´Íê³É!$end"
+  echo -e "$incæ­¤åŠŸèƒ½æœªå®Œæˆ!$end"
 }
 prog_file(){
   pwd="$PWD/${dir[select]}" ; tmp="$1"
   if [ "$tmp" = 2 ] ; then tmp=0 ; fi
   echo -ne "${linkp[$1]}$3$end"
   $app/Msgbox.sh "$xy" "$2"\
-  "'${clickmsg[click[select]]}' 'ÔËĞĞ...' ${linkshow[$1]} ${tar[$1]} '¹ÒÔØ/Á´½Ó' 'ÖØÃüÃû' 'É¾³ı...' '·µ»Ø'"
+  "'${clickmsg[click[select]]}' 'è¿è¡Œ...' ${linkshow[$1]} ${tar[$1]} 'æŒ‚è½½/é“¾æ¥' 'é‡å‘½å' 'åˆ é™¤...' 'è¿”å›'"
   case "$?" in
   0 ) click[$select]=$((click[select]==0)) ;;
   1 ) prog_file_msgbox_run ;;
@@ -127,11 +128,11 @@ prog_file(){
   esac
 }
 prog_file_open(){
-  $app/Msgbox.sh "$xy" "´ò¿ªÎÄ¼ş ÇëÑ¡Ôñ´ò¿ª·½Ê½:"\
-  "'ÅµÑÇÊéÔ·' 'ÎÒµÄÏà²á' 'ÍøÂçÓÎÀÀ' '±à³ÌÌìµØ' '  ·µ»Ø  '"
+  $app/Msgbox.sh "$xy" "æ‰“å¼€æ–‡ä»¶ è¯·é€‰æ‹©æ‰“å¼€æ–¹å¼:"\
+  "'è¯ºäºšä¹¦è‹‘' 'æˆ‘çš„ç›¸å†Œ' 'ç½‘ç»œæ¸¸è§ˆ' 'ç¼–ç¨‹å¤©åœ°' '  è¿”å›  '"
   tmp=$?
   if [ "$tmp" = 4 ] ; then return ; fi
-  echo -e "$inc²»Òª×îĞ¡»¯,×îĞ¡»¯ºóÎŞ·¨»Ö¸´!$end"
+  echo -e "$incä¸è¦æœ€å°åŒ–,æœ€å°åŒ–åæ— æ³•æ¢å¤!$end"
   case $tmp in
   0 ) "$optbin/ebook" "$PWD/${dir[select]}" ;;
   1 ) "$optbin/photo" "$PWD/${dir[select]}" ;;
@@ -140,8 +141,8 @@ prog_file_open(){
   esac
 }
 prog_file_msgbox_run(){
-  $app/Msgbox.sh "$xy" "ÔËĞĞÎÄ¼ş"\
-  "ÔÚ´ËÖÕ¶ËÔËĞĞ 'qcopÍâ²¿ÔËĞĞ' È¡Ïû"
+  $app/Msgbox.sh "$xy" "è¿è¡Œæ–‡ä»¶"\
+  "åœ¨æ­¤ç»ˆç«¯è¿è¡Œ 'qcopå¤–éƒ¨è¿è¡Œ' å–æ¶ˆ"
   case "$?" in
   0 ) (${dir[select]}) ;;
   1 ) /opt/QtPalmtop/bin/qcop "QPE/System"\
@@ -160,11 +161,11 @@ prog_file_edit(){
 }
 prog_mount(){
   mount="$pwd"
-  echo -e "$inc$pwdÒÑ´¢´æÎª¹ÒÔØ/Á´½ÓÔ­ÎÄ¼ş!$end" ; sleep 1s
+  echo -e "$inc$pwdå·²å‚¨å­˜ä¸ºæŒ‚è½½/é“¾æ¥åŸæ–‡ä»¶!$end" ; sleep 1s
 }
 prog_delete(){
-  $app/Msgbox.sh "$xy" "É¾³ıÎÄ¼ş 'È·¶¨ÒªÉ¾³ı?'"\
-  "É¾³ıµ½»ØÊÕÕ¾ ³¹µ×É¾³ı È¡ÏûÉ¾³ı²Ù×÷"
+  $app/Msgbox.sh "$xy" "åˆ é™¤æ–‡ä»¶ 'ç¡®å®šè¦åˆ é™¤?'"\
+  "åˆ é™¤åˆ°å›æ”¶ç«™ å½»åº•åˆ é™¤ å–æ¶ˆåˆ é™¤æ“ä½œ"
   case "$?" in
   0 )
     rm -rf "$recycle/${dir[select]}" > "$null"
@@ -172,12 +173,12 @@ prog_delete(){
   1 ) rm -rf "${dir[select]}" ; tmp="$?" ;;
   2 ) return ;;
   esac
-  echo -e "$incÉ¾³ı${ok[tmp]}!$end" ; usleep 500000
+  echo -e "$incåˆ é™¤${ok[tmp]}!$end" ; usleep 500000
 }
 prog_rename(){
-  prog_input ÖØÃüÃûÎÄ¼ş
+  prog_input é‡å‘½åæ–‡ä»¶
   mv "${dir[select]}" "$read"
-  echo -e "$incÖØÃüÃû${ok[$?]}!$end" ; usleep 500000
+  echo -e "$incé‡å‘½å${ok[$?]}!$end" ; usleep 500000
 }
 prog_click_back(){
   clickbak=(${click[@]}) ; unset click[@]
@@ -205,11 +206,11 @@ prog_click(){
     fi
   done
   if [ $clicknum = 0 ] ; then
-    echo ; echo -e "$incÎŞÑ¡ÔñÏî!$end"
+    echo ; echo -e "$incæ— é€‰æ‹©é¡¹!$end"
     usleep 500000 ; return
   fi
-  $app/Msgbox.sh "$xy" "Ñ¡ÔñÏî²Ù×÷ ÒÑÑ¡Ôñ$clicknumÏî"\
-  "¼ôÇĞ ¸´ÖÆ 'É¾³ı...' '´ò°ü...' '·µ»Ø'"
+  $app/Msgbox.sh "$xy" "é€‰æ‹©é¡¹æ“ä½œ å·²é€‰æ‹©$clicknumé¡¹"\
+  "å‰ªåˆ‡ å¤åˆ¶ 'åˆ é™¤...' 'æ‰“åŒ…...' 'è¿”å›'"
   case $? in
   0 ) prog_multicut ;;
   1 ) prog_multicopy ;;
@@ -222,12 +223,12 @@ prog_click_clear(){
 }
 prog_multicut(){
   unset copy[@] ; copy[0]=0 ; prog_copy_data
-  echo -e "$inc¼ôÇĞ: ÒÑ´¢´æ$clicknum¸öÎÄ¼şµ½¼ôÌù°å$end"
+  echo -e "$incå‰ªåˆ‡: å·²å‚¨å­˜$clicknumä¸ªæ–‡ä»¶åˆ°å‰ªè´´æ¿$end"
   usleep 500000
 }
 prog_multicopy(){
   unset copy[@] ; copy[0]=1 ; prog_copy_data
-  echo -e "$inc¸´ÖÆ: ÒÑ´¢´æ$clicknum¸öÎÄ¼şµ½¼ôÌù°å$end"
+  echo -e "$incå¤åˆ¶: å·²å‚¨å­˜$clicknumä¸ªæ–‡ä»¶åˆ°å‰ªè´´æ¿$end"
   usleep 500000
 }
 prog_copy_data(){
@@ -236,11 +237,11 @@ prog_copy_data(){
   done
 }
 prog_multidelete(){
-  $app/Msgbox.sh "$xy" "É¾³ıÎÄ¼ş ÒÑÑ¡Ôñ$clicknum¸öÎÄ¼ş"\
-  "É¾³ıµ½»ØÊÕÕ¾ ³¹µ×É¾³ı È¡ÏûÉ¾³ı²Ù×÷"
+  $app/Msgbox.sh "$xy" "åˆ é™¤æ–‡ä»¶ å·²é€‰æ‹©$clicknumä¸ªæ–‡ä»¶"\
+  "åˆ é™¤åˆ°å›æ”¶ç«™ å½»åº•åˆ é™¤ å–æ¶ˆåˆ é™¤æ“ä½œ"
   tmp="$?"
   if [ $tmp = 2 ] ; then return ; fi
-  echo -e "$incÕıÔÚÉ¾³ıÎÄ¼şÖĞ...$end"
+  echo -e "$incæ­£åœ¨åˆ é™¤æ–‡ä»¶ä¸­...$end"
   for ((n=0;n<${#clickterms[@]};n++)) ; do
     echo -e "$inc$((n+1))/${#clickterms[@]}: ${clickterms[n]}$end"
     if [ $tmp = 0 ] ; then
@@ -253,23 +254,23 @@ prog_multidelete(){
   unset click[@] ; select=1
 }
 prog_pickup(){
-  $app/Msgbox.sh "$xy" "'´´½¨.tar.gzÑ¹ËõÎÄ¼ş' 'ÒÑÑ¡Ôñ$clicknumÏî'"\
-  "'Ñ¹Ëõµ½µ±Ç°Ä¿Â¼' 'Ñ¹Ëõµ½±¾µØ´ÅÅÌ' 'Ñ¹Ëõµ½´æ´¢¿¨' 'È¡Ïû'"
+  $app/Msgbox.sh "$xy" "'åˆ›å»º.tar.gzå‹ç¼©æ–‡ä»¶' 'å·²é€‰æ‹©$clicknumé¡¹'"\
+  "'å‹ç¼©åˆ°å½“å‰ç›®å½•' 'å‹ç¼©åˆ°æœ¬åœ°ç£ç›˜' 'å‹ç¼©åˆ°å­˜å‚¨å¡' 'å–æ¶ˆ'"
   case $? in
   0 ) tardir="$PWD" ;;
   1 ) tardir="/mnt/UsrDisk" ;;
   2 ) tardir="/mnt/mmc" ;;
   3 ) return ;;
   esac
-  prog_input "ÎÄ¼ş´ò°ü"
-  echo -e "$incÑ¹Ëõµ½$tardir/$read.tar.gz: Ñ¹ËõÖĞ...$end"
+  prog_input "æ–‡ä»¶æ‰“åŒ…"
+  echo -e "$incå‹ç¼©åˆ°$tardir/$read.tar.gz: å‹ç¼©ä¸­...$end"
   tar -czvf "$tardir/$read.tar.gz" -C "$PWD" ${clicknames[@]}
-  echo -e "$incÑ¹Ëõ${ok[$?]}!$end"
+  echo -e "$incå‹ç¼©${ok[$?]}!$end"
 }
 prog_dir(){
   echo -e "${linkp[$1]}$3$end"
-  $app/Msgbox.sh "$xy" "ÎÄ¼ş¼Ğ$2"\
-  "'½øÈë' ${linkshow[$1]} '${clickmsg[click[select]]}' '¹ÒÔØµ½´ËÎÄ¼ş¼Ğ' '¹ÒÔØ/Á´½Ó' 'ÖØÃüÃû' 'É¾³ı...' '·µ»Ø'"
+  $app/Msgbox.sh "$xy" "æ–‡ä»¶å¤¹$2"\
+  "'è¿›å…¥' ${linkshow[$1]} '${clickmsg[click[select]]}' 'æŒ‚è½½åˆ°æ­¤æ–‡ä»¶å¤¹' 'æŒ‚è½½/é“¾æ¥' 'é‡å‘½å' 'åˆ é™¤...' 'è¿”å›'"
   case $? in
   0 ) cd "${dir[select]}" ; prog_click_clear ; select=1 ;;
   $1 ) cd "`readlink "${dir[select]}"`" ; select=1 ;;
@@ -282,16 +283,16 @@ prog_dir(){
 }
 prog_mount_to(){
   if [ "$mount" = "" ] ; then
-    echo -e "$incÃ»ÓĞÑ¡Ôñ¹ÒÔØÔ­ÎÄ¼ş!$end"
+    echo -e "$incæ²¡æœ‰é€‰æ‹©æŒ‚è½½åŸæ–‡ä»¶!$end"
     usleep 500000 ; return
   fi
   umount -l "${dir[select]}" ; usleep 300000
   mount "$mount" "${dir[select]}"
-  echo -e "$inc¹ÒÔØ${ok[$?]}!$end"
+  echo -e "$incæŒ‚è½½${ok[$?]}!$end"
 }
 prog_unpick(){
-  $app/Msgbox.sh "$xy" "½âÑ¹ÎÄ¼ş"\
-  "½âÑ¹µ½µ±Ç°Ä¿Â¼ ½âÑ¹µ½±¾µØ´ÅÅÌ ½âÑ¹µ½´æ´¢¿¨ ½âÑ¹µ½¸ùÄ¿Â¼ È¡Ïû"
+  $app/Msgbox.sh "$xy" "è§£å‹æ–‡ä»¶"\
+  "è§£å‹åˆ°å½“å‰ç›®å½• è§£å‹åˆ°æœ¬åœ°ç£ç›˜ è§£å‹åˆ°å­˜å‚¨å¡ è§£å‹åˆ°æ ¹ç›®å½• å–æ¶ˆ"
   case $? in
   0 ) tardir="$PWD" ;;
   1 ) tardir="/mnt/UsrDisk" ;;
@@ -300,15 +301,15 @@ prog_unpick(){
   4 ) return ;;
   esac
   tar -xzvf "${dir[select]}" -C "$tardir"
-  echo -e "$inc½âÑ¹${ok[$?]}$end"
+  echo -e "$incè§£å‹${ok[$?]}$end"
 }
 
-#³õÊ¼»¯
+#åˆå§‹åŒ–
 mkdir -p "$recycle"
 initdir="$1"
 power=1 ; open=0
 
-#Ö÷³ÌĞò
+#ä¸»ç¨‹åº
 stty -echo ; stty erase '^?' ; cd "$initdir"
 until [ "$quit" = 1 ] ; do
   prog_find ; select="$(($(<$listfile)+1))"
@@ -317,15 +318,15 @@ until [ "$quit" = 1 ] ; do
   ${#dir[@]} ) prog_msgbox_dirmenu ;;
   $((${#dir[@]}+1)) ) prog_click ;;
   $((${#dir[@]}+2)) ) df -h
-    echo -e "$inc°´ÊäÈë¼ü¼ÌĞø...$end" ; read -s ;;
+    echo -e "$incæŒ‰è¾“å…¥é”®ç»§ç»­...$end" ; read -s ;;
   $((${#dir[@]}+3)) ) exit 1 ;;
   * )
     case "${style[select]}" in
     0 ) prog_dir 0 ;;
-    1 ) prog_file 0 ÆÕÍ¨ÎÄ¼ş ;;
-    2 ) prog_file 1 ÎÄ¼şÁ´½Ó "\E[2G$incµØÖ·: `readlink "${dir[select]}"`" ;;
-    5 ) prog_dir 1 Á´½Ó "\E[2G$incµØÖ·: `readlink "${dir[select]}"`" ;;
-    6 ) prog_file 2 Ñ¹ËõÎÄ¼ş ;;
+    1 ) prog_file 0 æ™®é€šæ–‡ä»¶ ;;
+    2 ) prog_file 1 æ–‡ä»¶é“¾æ¥ "\E[2G$incåœ°å€: `readlink "${dir[select]}"`" ;;
+    5 ) prog_dir 1 é“¾æ¥ "\E[2G$incåœ°å€: `readlink "${dir[select]}"`" ;;
+    6 ) prog_file 2 å‹ç¼©æ–‡ä»¶ ;;
     esac ;;
   esac
 done

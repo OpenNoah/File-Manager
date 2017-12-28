@@ -1,23 +1,23 @@
-#!/bin/sh
+#!/bin/bash
 color='\E[1;31m' ; about='\E[0;37m' ; end='\E[0m'
-declare -a inp=("'\E[1;34mEN ' '\E[1;33mCH '")
+declare -a inp=('\E[1;34mEN ' '\E[1;33mCH ')
 show='************' ; stty erase '^?' ; clear
 if [ "$1" = "EN" ] ; then cmd='e' ; ce=0
-  echo -e "$color$show Ó¢  ÎÄ  Ãü  Áî  Êä  Èë $show$end"
+  echo -e "$color$show è‹±  æ–‡  å‘½  ä»¤  è¾“  å…¥ $show$end"
 else cmd='r' ; ce=1
-  echo -e "$color$show ÖĞ  ÎÄ  Ãü  Áî  Êä  Èë $show$end"
+  echo -e "$color$show ä¸­  æ–‡  å‘½  ä»¤  è¾“  å…¥ $show$end"
 fi
-how="echo -e $about $about ÊäÈë EN ÇĞ»»µ½Ó¢ÎÄ, CH ÇĞ»»µ½ÖĞÎÄ, quit ÍË³ö$end"
+how="echo -e $about $about è¾“å…¥ EN åˆ‡æ¢åˆ°è‹±æ–‡, CH åˆ‡æ¢åˆ°ä¸­æ–‡, quit é€€å‡º$end"
 $how
 until [ "$cdin" = "quit" ] ; do
   echo -en "${inp[ce]}# $end" ; read -$cmd cdin
   case "$cdin" in
   "EN" ) cmd="e" ; ce=0
-    echo -e "$color$show Ó¢  ÎÄ  Ãü  Áî  Êä  Èë $show$end" ; $how ;;
+    echo -e "$color$show è‹±  æ–‡  å‘½  ä»¤  è¾“  å…¥ $show$end" ; $how ;;
   "CH" ) cmd="r" ; ce=1
-    echo -e "$color$show ÖĞ  ÎÄ  Ãü  Áî  Êä  Èë $show$end" ; $how ;;
+    echo -e "$color$show ä¸­  æ–‡  å‘½  ä»¤  è¾“  å…¥ $show$end" ; $how ;;
   "quit" )
-    echo -e "$color$show³ÌĞòÍË³ö$show$end" ;;
+    echo -e "$color$showç¨‹åºé€€å‡º$show$end" ;;
   * ) $cdin ;;
   esac
 done

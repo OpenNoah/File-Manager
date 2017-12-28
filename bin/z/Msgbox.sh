@@ -1,7 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 
-#±äÁ¿
-ctrlf='/opt/QtPalmtop/data/z/common/ctrl.dat'
+#å˜é‡
+#ctrlf='/opt/QtPalmtop/data/z/common/ctrl.dat'
+ctrlf="$(dirname "$0")/../../data/z/common/term.dat"
 declare -a tmp=($(<"$ctrlf"))
 up="${tmp[0]}" ; down="${tmp[1]}"
 left="${tmp[2]}" ; right="${tmp[3]}"
@@ -9,18 +10,18 @@ pageup="${tmp[4]}" ; pagedown="${tmp[5]}"
 back="${tmp[6]}"
 declare -a space upline midline downline
 
-#×ªÒå×Ö·û´®
+#è½¬ä¹‰å­—ç¬¦ä¸²
 titc='\E[91;40m' ; linc='\E[32;40m'
-declare -a term=("'\E[34;40m  ' '\E[92;44m> \E[91;102m'")
+declare -a term=('\E[34;40m  ' '\E[92;44m> \E[91;102m')
 end='\E[0m'  ; delete='\E[J' ; del='\E[2K'
-declare -a frame=("'\E[96;45m¨X\E[0m' \
-'\E[96;45m¨T\E[0m' '\E[96;45m¨[\E[0m' \
-'\E[96;45m¨U\E[0m' '\E[96;45m¨U\E[0m' \
-'\E[96;45m¨^\E[0m' '\E[96;45m¨T\E[0m' \
-'\E[96;45m¨a\E[0m' '##'")
-#frame¿ò¼ÜË³Ğò: ×óÉÏ ÉÏ ÓÒÉÏ ×ó ÓÒ ×óÏÂ ÏÂ ÓÒÏÂ
+declare -a frame=('\E[96;45mâ•”â•\E[0m' \
+'\E[96;45mâ•â•\E[0m' '\E[96;45mâ•â•—\E[0m' \
+'\E[96;45mâ•‘ \E[0m' '\E[96;45m â•‘\E[0m' \
+'\E[96;45mâ•šâ•\E[0m' '\E[96;45mâ•â•\E[0m' \
+'\E[96;45mâ•â•\E[0m' '##')
+#frameæ¡†æ¶é¡ºåº: å·¦ä¸Š ä¸Š å³ä¸Š å·¦ å³ å·¦ä¸‹ ä¸‹ å³ä¸‹
 
-#º¯Êı
+#å‡½æ•°
 prog_quit(){
   echo -e "\E[?25h" ; stty echo ; exit $select
 }
@@ -38,15 +39,15 @@ prog_auto(){
   xy[2]=$((xy[2]+1))
 }
 
-#³õÊ¼»¯
+#åˆå§‹åŒ–
 echo -ne "\E[?25l" ; stty -echo
 if [ "$1" = "" ] ; then
-  declare -a xy=("4 14 0 0")\
-  message=("'Here is a message box.' 'ÕâÊÇÒ»¸öĞ¡ÌáÊ¾Ñ¡Ôñ¿ò' 'Made by Norman (ZHIYB)'")\
-  choose=("'Exit' 'Quit' 'Escape' 'ÍË³ö³ÌĞò'")
+  declare -a xy=(4 14 0 0)\
+  message=('Here is a message box.' 'è¿™æ˜¯ä¸€ä¸ªå°æç¤ºé€‰æ‹©æ¡†' 'Made by Norman (ZHIYB)')\
+  choose=('Exit' 'Quit' 'Escape' 'é€€å‡ºç¨‹åº')
   prog_auto ; xy[2]=$((xy[2]/2))
 else
-  declare -a xy=("$1") message=("$2") choose=("$3")
+  eval declare -a xy=($1) message=($2) choose=($3)
   if [ "${xy[2]}" = 0 ] ; then prog_auto ; fi
   xy[2]=$((xy[2]/2))
 fi
@@ -58,7 +59,7 @@ for ((n=1;n<=xy[2]*2+4;n++)) ; do
 done
 dat="${xy[3]}"
 
-#Ö÷³ÌĞò
+#ä¸»ç¨‹åº
 echo -ne "\E[$((xy[0]<0?0:xy[0]));$((xy[1]-2))H$del$delete${frame[0]}${upline[xy[2]+2]}${frame[2]}"
 for ((n=0;n<${#message[@]};n++)) ; do
   echo -ne "\E[$((xy[0]+n+1));$((xy[1]-2))H${frame[3]} $titc${message[n]}${space[xy[2]*2-${#message[n]}+3]}${frame[4]}"
